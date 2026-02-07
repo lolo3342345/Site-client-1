@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Grok Executor</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#0d1117;
+    --card:#161b22;
+    --border:#2f3640;
+    --text:#e6edf3;
+    --muted:#9da7b3;
+    --accent:#6cf2c2;
+}
+
+*{
+    box-sizing:border-box;
+    font-family:'Inter', sans-serif;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+}
+
+/* CANVAS SPACE */
+#stars{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+}
+
+/* HEADER */
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 40px;
+    border-bottom:1px solid var(--border);
+    backdrop-filter: blur(6px);
+}
+
+.logo{
+    font-size:22px;
+    font-weight:700;
+    color:var(--accent);
+}
+
+nav a{
+    color:var(--muted);
+    text-decoration:none;
+    margin-left:20px;
+    font-size:14px;
+}
+
+nav a:hover{
+    color:var(--text);
+}
+
+/* HERO */
+.hero{
+    text-align:center;
+    padding:120px 20px;
+}
+
+.hero h1{
+    font-size:48px;
+    margin-bottom:20px;
+}
+
+.hero p{
+    color:var(--muted);
+    max-width:600px;
+    margin:0 auto 40px;
+    font-size:18px;
+}
+
+.download-btn{
+    background:var(--accent);
+    color:#000;
+    padding:16px 40px;
+    border-radius:14px;
+    text-decoration:none;
+    font-weight:600;
+    font-size:18px;
+    transition:.2s;
+    box-shadow:0 0 25px rgba(108,242,194,.3);
+}
+
+.download-btn:hover{
+    opacity:.85;
+}
+
+/* CARDS */
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+    padding:40px;
+    max-width:1100px;
+    margin:auto;
+}
+
+.card{
+    background:rgba(22,27,34,.9);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:25px;
+    backdrop-filter: blur(8px);
+}
+
+.card h3{
+    margin-top:0;
+    color:var(--accent);
+}
+
+.card p{
+    color:var(--muted);
+    font-size:14px;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    padding:20px;
+    color:var(--muted);
+    font-size:13px;
+    border-top:1px solid var(--border);
+    backdrop-filter: blur(6px);
+}
+</style>
+</head>
+
+<body>
+
+<!-- FUNDO ESPAÇO -->
+<canvas id="stars"></canvas>
+
+<header>
+    <div class="logo">Grok</div>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Features</a>
+        <a href="#">Download</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>Grok Executor</h1>
+    <p>Executor moderno para PC, rápido, estável e com interface premium.
+       Desenvolvido para quem quer desempenho e simplicidade.</p>
+
+    <a class="download-btn" href="https://files.catbox.moe/va4ub0.rar" download>
+        ⬇ Download para Windows
+    </a>
+</section>
+
+<section class="cards">
+    <div class="card">
+        <h3>⚡ Rápido</h3>
+        <p>Inicialização leve e execução otimizada para PCs fracos.</p>
+    </div>
+
+    <div class="card">
+        <h3>🎨 Interface Moderna</h3>
+        <p>Design inspirado no Grok, limpo e confortável para uso prolongado.</p>
+    </div>
+
+    <div class="card">
+        <h3>🔒 Seguro</h3>
+        <p>Executor focado em estabilidade e proteção do usuário.</p>
+    </div>
+</section>
+
+<footer>
+    © 2026 Grok — Todos os direitos reservados
+</footer>
+
+<script>
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+let w, h;
+function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+const stars = [];
+const STAR_COUNT = 250;
+
+for(let i = 0; i < STAR_COUNT; i++){
+    stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.5 + 0.3,
+        v: Math.random() * 0.25 + 0.05,
+        a: Math.random()
+    });
+}
+
+function draw(){
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = "white";
+
+    for(const s of stars){
+        ctx.globalAlpha = s.a;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        s.y -= s.v;
+        if(s.y < 0){
+            s.y = h;
+            s.x = Math.random() * w;
+        }
+    }
+    requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+
+</body>
+</html>
